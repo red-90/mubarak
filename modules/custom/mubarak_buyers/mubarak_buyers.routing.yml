@@ -1,0 +1,15 @@
+mubarak_buyers.content:
+  path: '/first'
+  defaults:
+    _controller: 'Drupal\mubarak_buyers\Controller\BuyersController::content'
+    _title: 'Hello world'
+  requirements:
+    _permission: 'access content'
+
+mubarak_buyers.create_buyer_form:
+  path: '/mubarak/buyers/create'
+  defaults:
+    _form: 'Drupal\mubarak_buyers\Form\BuyersForm'
+    _title: 'Create buyers'
+  requirements:
+    _permission: 'access content'

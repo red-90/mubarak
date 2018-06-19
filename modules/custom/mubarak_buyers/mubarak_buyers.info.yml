@@ -1,0 +1,6 @@
+name: Buyers
+description: Module to manage Buyers
+package: Custom
+type: module
+version: 1.0
+core: 8.x

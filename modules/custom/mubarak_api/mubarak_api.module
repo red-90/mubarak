@@ -1,0 +1,40 @@
+<?php
+
+use Drupal\field_collection\Entity\FieldCollectionItem;
+
+
+function mubarak_api_node_presave($node) {
+  // If it is the wanted content type ...
+  if($node->getType() === 'financial_transfers' && $node->isNew()) {
+  	$uid = $node->get('field_buyers')->getValue()[0]['target_id'];
+  	$price = $node->get('field_price')->getValue()[0]['value'];
+    $user = \Drupal\user\Entity\User::load($uid); // load the user
+    $user_balance = $user->get('field_wallet')->getValue()[0]['value'];
+    $user->set('field_wallet', $user_balance+$price ); // set a value for a particular field
+    $user->save();
+  }
+
+  if($node->getType() === 'cars' && $node->isNew()) {
+  	$paid = $node->get('field_paid_or_not')->getValue()[0]['value'];
+  	if(!$paid){
+  		$uid = $node->get('field_buyers')->getValue()[0]['target_id'];
+	  	$price = $node->get('field_price')->getValue()[0]['value'];
+	    $user = \Drupal\user\Entity\User::load($uid); // load the user
+	    $user_balance = $user->get('field_balance')->getValue()[0]['value'];
+	    $user->set('field_balance', $user_balance+$price ); // set a value for a particular field
+	    $user->save();
+  	}
+  }
+}
+
+
+function mubarak_api_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'node_buyers_numbers_edit_form':
+      $form['title']['#disabled'] = 'disabled';
+      break;
+  }
+}
+
+
+///204.48.27.252
